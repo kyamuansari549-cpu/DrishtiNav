@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DrishtiNav</string>
+    <string name="start">START SCANNING</string>
+    <string name="stop">STOP</string>
+    <string name="start_desc">Start obstacle scanning. Double tap to activate.</string>
+    <string name="stop_desc">Stop obstacle scanning. Double tap to activate.</string>
+    <string name="status_idle">Press START, then point the camera forward at chest height.</string>
+    <string name="status_loading_model">Loading detection model…</string>
+    <string name="navigate">NAVIGATE</string>
+    <string name="stop_navigation">STOP NAV</string>
+    <string name="setup">SETUP</string>
+    <string name="nav_planning">Planning route…</string>
+    <string name="nav_waiting_gps">Waiting for GPS fix…</string>
+</resources>

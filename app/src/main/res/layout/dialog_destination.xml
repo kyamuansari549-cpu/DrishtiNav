@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/dest_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search a place, or enter lat,lng"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:minHeight="56dp"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="SEARCH" />
+
+    <ListView
+        android:id="@+id/results_list"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Tap a result to navigate. Long-press to save or remove a place."
+        android:textSize="13sp" />
+
+</LinearLayout>
