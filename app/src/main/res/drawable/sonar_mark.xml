@@ -1,44 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  DrishtiNav launcher mark: bold echolocation sonar in deep navy on the
-  bright teal tile, with the warm amber core. High contrast so it reads
-  at a glance in the app drawer. Original mark: no borrowed logos.
--->
+<!-- Sonar mark for in-app use on dark surfaces: teal rings, amber core. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- outer echo -->
     <path
         android:pathData="M21,54 A33,33 0 1,1 87,54 A33,33 0 1,1 21,54 Z"
         android:strokeWidth="5"
-        android:strokeColor="#0B2233"
-        android:strokeAlpha="0.38"
+        android:strokeColor="#5BB5A5"
+        android:strokeAlpha="0.4"
         android:strokeLineCap="round" />
 
-    <!-- mid echo -->
     <path
         android:pathData="M30.5,54 A23.5,23.5 0 1,1 77.5,54 A23.5,23.5 0 1,1 30.5,54 Z"
         android:strokeWidth="5.5"
-        android:strokeColor="#0B2233"
-        android:strokeAlpha="0.62"
+        android:strokeColor="#5BB5A5"
+        android:strokeAlpha="0.65"
         android:strokeLineCap="round" />
 
-    <!-- inner echo -->
     <path
         android:pathData="M40,54 A14,14 0 1,1 68,54 A14,14 0 1,1 40,54 Z"
         android:strokeWidth="6"
-        android:strokeColor="#0B2233"
-        android:strokeAlpha="0.92"
+        android:strokeColor="#5BB5A5"
+        android:strokeAlpha="0.95"
         android:strokeLineCap="round" />
 
-    <!-- amber core: soft halo + solid heart -->
     <path
         android:pathData="M44,54 A10,10 0 1,1 64,54 A10,10 0 1,1 44,54 Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.35" />
+        android:fillColor="#FFB454"
+        android:fillAlpha="0.3" />
     <path
         android:pathData="M48,54 A6,6 0 1,1 60,54 A6,6 0 1,1 48,54 Z"
         android:fillColor="#FFB454" />
