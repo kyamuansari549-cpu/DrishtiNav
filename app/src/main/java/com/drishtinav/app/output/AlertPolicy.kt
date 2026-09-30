@@ -22,7 +22,7 @@ import com.drishtinav.app.perception.Urgency
 class AlertPolicy(
     private val speech: SpeechEngine,
     private val haptics: HapticEngine,
-    private val onAnnouncement: (String) -> Unit = {}
+    private val onAnnouncement: (String, Boolean) -> Unit = { _, _ -> }
 ) {
 
     /** When true, NEAR obstacles in left/right zones are announced too. */
@@ -68,7 +68,7 @@ class AlertPolicy(
             speech.speakQueued(text)
             haptics.near()
         }
-        onAnnouncement(text)
+        onAnnouncement(text, target.urgency == Urgency.URGENT)
         return text
     }
 

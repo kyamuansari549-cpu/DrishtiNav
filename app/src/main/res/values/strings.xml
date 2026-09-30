@@ -12,4 +12,5 @@
     <string name="setup">SETUP</string>
     <string name="nav_planning">Planning route…</string>
     <string name="nav_waiting_gps">Waiting for GPS fix…</string>
+    <string name="sonar_desc">Live scanning indicator</string>
 </resources>

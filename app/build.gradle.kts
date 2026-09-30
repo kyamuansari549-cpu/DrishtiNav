@@ -11,8 +11,8 @@ android {
         applicationId = "com.drishtinav.app"
         minSdk = 29
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.5.0"
+        versionCode = 6
+        versionName = "0.6.0"
     }
 
     buildTypes {
@@ -49,6 +49,8 @@ dependencies {
     implementation("com.google.mediapipe:tasks-vision:0.10.35")
 
     implementation("androidx.core:core-ktx:1.15.0")
+    // Branded cold-start splash with the animated sonar icon.
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Opening animation: sonar rings ping outward from the amber core,
+  staggered 150 ms apart, then settle. Shown by the splash screen
+  (Android 12+); older versions show the static first frame.
+-->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/splash_sonar">
+
+    <target android:name="ring_inner">
+        <aapt:attr name="android:animation">
+            <set android:ordering="together">
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:valueFrom="0.7"
+                    android:valueTo="1.0"
+                    android:duration="550"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:valueFrom="0.7"
+                    android:valueTo="1.0"
+                    android:duration="550"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="ring_mid">
+        <aapt:attr name="android:animation">
+            <set
+                android:ordering="together"
+                android:startOffset="150">
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:valueFrom="0.7"
+                    android:valueTo="1.0"
+                    android:duration="550"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:valueFrom="0.7"
+                    android:valueTo="1.0"
+                    android:duration="550"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="ring_outer">
+        <aapt:attr name="android:animation">
+            <set
+                android:ordering="together"
+                android:startOffset="300">
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:valueFrom="0.7"
+                    android:valueTo="1.0"
+                    android:duration="550"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:valueFrom="0.7"
+                    android:valueTo="1.0"
+                    android:duration="550"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="dot">
+        <aapt:attr name="android:animation">
+            <set android:ordering="together">
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:valueFrom="0.5"
+                    android:valueTo="1.0"
+                    android:duration="400"
+                    android:interpolator="@android:interpolator/overshoot" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:valueFrom="0.5"
+                    android:valueTo="1.0"
+                    android:duration="400"
+                    android:interpolator="@android:interpolator/overshoot" />
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

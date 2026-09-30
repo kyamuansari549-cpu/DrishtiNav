@@ -13,11 +13,11 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.drishtinav.app.ar.ArCoreManager
 import com.drishtinav.app.ar.BackgroundRenderer
@@ -32,6 +32,9 @@ import com.drishtinav.app.output.HapticEngine
 import com.drishtinav.app.output.SpeechEngine
 import com.drishtinav.app.settings.AppSettings
 import com.drishtinav.app.settings.SettingsActivity
+import com.drishtinav.app.ui.SonarView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.drishtinav.app.perception.FrameConverter
 import com.drishtinav.app.perception.ObstacleDetector
 import com.drishtinav.app.perception.ObstacleFusion
@@ -60,9 +63,11 @@ class MainActivity : AppCompatActivity(),
     private lateinit var statusText: TextView
     private lateinit var alertText: TextView
     private lateinit var navText: TextView
-    private lateinit var toggleButton: Button
-    private lateinit var navigateButton: Button
-    private lateinit var setupButton: Button
+    private lateinit var toggleButton: MaterialButton
+    private lateinit var navigateButton: MaterialButton
+    private lateinit var setupButton: MaterialButton
+    private lateinit var sonarView: SonarView
+    private lateinit var navCard: MaterialCardView
 
     private lateinit var arCore: ArCoreManager
     private lateinit var backgroundRenderer: BackgroundRenderer
@@ -118,6 +123,8 @@ class MainActivity : AppCompatActivity(),
     // ------------------------------------------------------------------ setup
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Branded launch animation; hands over to Theme.DrishtiNav automatically.
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -125,6 +132,8 @@ class MainActivity : AppCompatActivity(),
         statusText = findViewById(R.id.status_text)
         alertText = findViewById(R.id.alert_text)
         navText = findViewById(R.id.nav_text)
+        navCard = findViewById(R.id.nav_card)
+        sonarView = findViewById(R.id.sonar_view)
         toggleButton = findViewById(R.id.toggle_button)
         navigateButton = findViewById(R.id.navigate_button)
         setupButton = findViewById(R.id.setup_button)
@@ -155,8 +164,18 @@ class MainActivity : AppCompatActivity(),
 
         speech = SpeechEngine(this)
         haptics = HapticEngine(this)
-        alertPolicy = AlertPolicy(speech, haptics) { text ->
-            runOnUiThread { alertText.text = text }
+        alertPolicy = AlertPolicy(speech, haptics) { text, urgent ->
+            runOnUiThread {
+                alertText.text = text
+                // Urgent alerts flash amber + fire a shockwave on the sonar.
+                alertText.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        if (urgent) R.color.sonar_amber else R.color.teal
+                    )
+                )
+                if (urgent) sonarView.pulseUrgent()
+            }
         }
         arCore = ArCoreManager(this).also { it.frameListener = this }
 
@@ -251,6 +270,7 @@ class MainActivity : AppCompatActivity(),
         running = true
         updateButtons()
         updateKeepScreenOn()
+        sonarView.start()
         arCore.resume()
         glView.onResume()
         status("Scanning — hold the phone at chest height, camera forward.")
@@ -263,9 +283,12 @@ class MainActivity : AppCompatActivity(),
         stopNavigation(silent = true)
         updateButtons()
         updateKeepScreenOn()
+        sonarView.stop()
         glView.onPause()
         arCore.pause()
         speech.stop()
+        alertText.text = ""
+        alertText.setTextColor(ContextCompat.getColor(this, R.color.teal))
         status(getString(R.string.status_idle))
     }
 
@@ -395,7 +418,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun setNavVisible(visible: Boolean) {
-        navText.visibility = if (visible) View.VISIBLE else View.GONE
+        navCard.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     // --------------------------------------------------------------- lifecycle
@@ -521,6 +544,7 @@ class MainActivity : AppCompatActivity(),
         toggleButton.text = getString(if (running) R.string.stop else R.string.start)
         toggleButton.contentDescription =
             getString(if (running) R.string.stop_desc else R.string.start_desc)
+        toggleButton.setIconResource(if (running) R.drawable.ic_stop else R.drawable.ic_play)
         navigateButton.text =
             getString(if (navEngine.isNavigating) R.string.stop_navigation else R.string.navigate)
     }
