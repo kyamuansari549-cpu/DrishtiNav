@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.DrishtiNav" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Premium Material 3 dark theme. Always dark: this is a field
+         visual-aid — low glare and high contrast matter more than the
+         system light/dark setting. -->
+    <style name="Theme.DrishtiNav" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/teal</item>
-        <item name="colorPrimaryVariant">@color/teal</item>
         <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimaryContainer">@color/teal_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_teal_container</item>
+        <item name="colorSecondary">@color/teal</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/surface_container_high</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        <item name="colorOutline">@color/outline</item>
         <item name="android:windowBackground">@color/black</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_variant</item>
     </style>
 
     <!-- Cold-start splash: animated sonar ping, then hands over to Theme.DrishtiNav. -->
@@ -13,5 +28,86 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.DrishtiNav</item>
+    </style>
+
+    <!-- ============ Buttons (expressive: full-round, 56dp+ targets) ============ -->
+
+    <style name="Widget.DrishtiNav.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">64dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="cornerRadius">32dp</item>
+        <item name="backgroundTint">@color/teal</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="iconTint">@color/black</item>
+        <item name="iconSize">26dp</item>
+        <item name="iconPadding">12dp</item>
+    </style>
+
+    <style name="Widget.DrishtiNav.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">64dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="cornerRadius">32dp</item>
+        <item name="strokeColor">@color/teal</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:textColor">@color/teal</item>
+        <item name="iconTint">@color/teal</item>
+        <item name="iconSize">26dp</item>
+        <item name="iconPadding">12dp</item>
+    </style>
+
+    <style name="Widget.DrishtiNav.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="backgroundTint">@color/teal_container</item>
+        <item name="android:textColor">@color/on_teal_container</item>
+        <item name="iconTint">@color/on_teal_container</item>
+    </style>
+
+    <!-- ============ Cards ============ -->
+
+    <style name="Widget.DrishtiNav.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/surface_container</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="strokeColor">@color/outline_variant</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.DrishtiNav.Card.Alert" parent="Widget.DrishtiNav.Card">
+        <item name="cardBackgroundColor">@color/surface_container_high</item>
+        <item name="cardCornerRadius">20dp</item>
+    </style>
+
+    <!-- ============ Text hierarchy ============ -->
+
+    <style name="Text.DrishtiNav.Display" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.DrishtiNav.Headline" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.DrishtiNav.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.DrishtiNav.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/on_surface_variant</item>
+    </style>
+
+    <style name="Text.DrishtiNav.Label" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">@color/teal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
     </style>
 </resources>

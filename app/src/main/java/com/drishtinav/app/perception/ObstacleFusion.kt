@@ -24,6 +24,10 @@ data class Obstacle(
  * orientation. A portrait point (px, py) maps to sensor coords
  * (u = py, v = 1 - px) — the inverse of the 90° clockwise rotation.
  * If field testing shows left/right mirrored, flip the v mapping here.
+ *
+ * Ranging: depth is sampled over the inner region of each box (see
+ * [DepthSampler.sampleRegionDepthMeters]), not just the box centre — the
+ * centre often lands on background, which would over-estimate distance.
  */
 object ObstacleFusion {
 
@@ -42,7 +46,6 @@ object ObstacleFusion {
     ): List<Obstacle> {
         return detections.mapNotNull { detection ->
             val cx = (detection.box.left + detection.box.right) / 2f / imageWidth
-            val cy = (detection.box.top + detection.box.bottom) / 2f / imageHeight
 
             val direction = when {
                 cx < 0.4f -> Direction.LEFT
@@ -50,10 +53,17 @@ object ObstacleFusion {
                 else -> Direction.CENTER
             }
 
-            val sensorU = cy.coerceIn(0f, 1f)
-            val sensorV = (1f - cx).coerceIn(0f, 1f)
+            // Portrait box -> normalised sensor-space rect.
+            // u = py, v = 1 - px, so the box's vertical span becomes the
+            // sensor-u span and the horizontal span becomes (flipped) v.
+            val w = imageWidth.toFloat()
+            val h = imageHeight.toFloat()
+            val uMin = (detection.box.top / h).coerceIn(0f, 1f)
+            val uMax = (detection.box.bottom / h).coerceIn(0f, 1f)
+            val vMin = (1f - detection.box.right / w).coerceIn(0f, 1f)
+            val vMax = (1f - detection.box.left / w).coerceIn(0f, 1f)
             val distance = depthImage?.let {
-                DepthSampler.sampleDepthMeters(it, sensorU, sensorV)
+                DepthSampler.sampleRegionDepthMeters(it, uMin, vMin, uMax, vMax)
             }
 
             val urgency = when {

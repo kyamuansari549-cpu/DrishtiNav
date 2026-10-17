@@ -59,8 +59,7 @@ class BackgroundRenderer {
     }
 
     fun draw(frame: Frame) {
-        GLES20.glClearColor(0f, 0f, 0f, 1f)
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+        clear()
         GLES20.glDisable(GLES20.GL_DEPTH_TEST)
 
         // Rotate/flip UVs so the preview matches the current display orientation.
@@ -80,6 +79,16 @@ class BackgroundRenderer {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
         GLES20.glDisableVertexAttribArray(positionAttr)
         GLES20.glDisableVertexAttribArray(texCoordAttr)
+    }
+
+    /**
+     * Clears the surface to opaque black without touching the camera texture.
+     * Used as a clean placeholder while ARCore is still starting up, so the
+     * user never sees uninitialized / pre-focus (blurry) camera frames.
+     */
+    fun clear() {
+        GLES20.glClearColor(0f, 0f, 0f, 1f)
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
     }
 
     private fun loadShader(type: Int, source: String): Int {

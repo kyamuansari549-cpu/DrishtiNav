@@ -1,38 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Destination picker: Material 3 search field + results list.
+     IDs consumed by NavigateDialog (do not rename): dest_input,
+     search_button, results_list. dest_input stays an EditText subclass
+     and search_button a Button subclass for compatibility. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="4dp">
 
-    <EditText
-        android:id="@+id/dest_input"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search a place, or enter lat,lng"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:minHeight="56dp"
-        android:textSize="18sp" />
+        android:hint="@string/dest_hint"
+        app:startIconDrawable="@drawable/ic_search"
+        app:endIconMode="clear_text"
+        app:boxStrokeColor="@color/teal"
+        app:hintTextColor="@color/on_surface_variant"
+        app:startIconTint="@color/on_surface_variant">
 
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="SEARCH" />
-
-    <ListView
-        android:id="@+id/results_list"
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_marginTop="8dp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dest_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:minHeight="60dp"
+            android:textColor="@color/on_surface"
+            android:textSize="17sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Tap a result to navigate. Long-press to save or remove a place."
+        android:layout_marginTop="6dp"
+        android:text="@string/dest_helper"
+        android:textColor="@color/on_surface_variant"
         android:textSize="13sp" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search_button"
+        style="@style/Widget.DrishtiNav.Button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/search"
+        android:textSize="15sp"
+        app:icon="@drawable/ic_search"
+        app:iconTint="@color/black"
+        app:iconGravity="textStart" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/dest_results_label"
+        android:textAppearance="@style/Text.DrishtiNav.Label"
+        android:textSize="11sp" />
+
+    <ListView
+        android:id="@+id/results_list"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_marginTop="4dp"
+        android:divider="@color/outline_variant"
+        android:dividerHeight="1dp"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/dest_tip"
+        android:textColor="@color/on_surface_variant"
+        android:textSize="13sp"
+        android:lineSpacingExtra="2dp" />
 </LinearLayout>

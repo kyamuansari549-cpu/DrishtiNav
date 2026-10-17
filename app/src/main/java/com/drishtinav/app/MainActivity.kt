@@ -21,6 +21,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.drishtinav.app.ar.ArCoreManager
 import com.drishtinav.app.ar.BackgroundRenderer
+import com.drishtinav.app.nav.Geocoder
 import com.drishtinav.app.nav.LocationTracker
 import com.drishtinav.app.nav.NavigateDialog
 import com.drishtinav.app.nav.NavigationEngine
@@ -35,6 +36,7 @@ import com.drishtinav.app.settings.SettingsActivity
 import com.drishtinav.app.ui.SonarView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.drishtinav.app.perception.DetectionTracker
 import com.drishtinav.app.perception.FrameConverter
 import com.drishtinav.app.perception.ObstacleDetector
 import com.drishtinav.app.perception.ObstacleFusion
@@ -89,6 +91,12 @@ class MainActivity : AppCompatActivity(),
 
     @Volatile
     private var detector: ObstacleDetector? = null
+
+    /**
+     * Temporal smoothing for detections (perception thread only).
+     * Kills single-frame flicker before it can reach the alert policy.
+     */
+    private val tracker = DetectionTracker()
 
     private var running = false
     private var pendingStart = false
@@ -145,6 +153,9 @@ class MainActivity : AppCompatActivity(),
         glView.setRenderer(object : GLSurfaceView.Renderer {
             override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
                 backgroundRenderer.createOnGlThread()
+                // New EGL context => new camera texture id; ARCore must be
+                // told about it again or the preview goes black on restart.
+                arCore.invalidateCameraTexture()
             }
 
             override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -180,6 +191,10 @@ class MainActivity : AppCompatActivity(),
         arCore = ArCoreManager(this).also { it.frameListener = this }
 
         locationTracker = LocationTracker(this).also { it.listener = this }
+        // Feed the user's GPS fix to place search so local results rank first.
+        Geocoder.locationProvider = {
+            locationTracker.lastLocation?.let { it.latitude to it.longitude }
+        }
         navEngine = NavigationEngine(speech, this)
         savedPlaces = SavedPlaces(this)
 
@@ -192,7 +207,10 @@ class MainActivity : AppCompatActivity(),
             if (navEngine.isNavigating) {
                 stopNavigation()
             } else {
-                NavigateDialog(this, savedPlaces) { lat, lng, name ->
+                NavigateDialog(
+                    this, savedPlaces,
+                    locationProvider = { locationTracker.lastLocation }
+                ) { lat, lng, name ->
                     startNavigation(lat, lng, name)
                 }.show()
             }
@@ -507,10 +525,12 @@ class MainActivity : AppCompatActivity(),
         val portrait = FrameConverter.toPortrait(FrameConverter.yuv420ToBitmap(cameraImage))
         try {
             val rawDetections = detector.detect(portrait)
-            if (rawDetections.isEmpty()) return
+            // Temporal smoothing: only objects seen across frames survive.
+            val detections = tracker.track(rawDetections)
+            if (detections.isEmpty()) return
             val obstacles =
                 ObstacleFusion.fuse(
-                    rawDetections, depthImage, portrait.width, portrait.height,
+                    detections, depthImage, portrait.width, portrait.height,
                     urgentM = settings.urgentDistanceM,
                     nearM = settings.nearDistanceM
                 )

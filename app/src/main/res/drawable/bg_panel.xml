@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Bottom control panel: rounded top corners, dark surface. -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <corners
-        android:topLeftRadius="28dp"
-        android:topRightRadius="28dp" />
-    <solid android:color="#F214181D" />
-</shape>
+<!-- Bottom control panel: rounded top corners, tonal dark surface with a
+     hairline teal edge highlight. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="32dp"
+                android:topRightRadius="32dp" />
+            <gradient
+                android:angle="90"
+                android:startColor="#FF1B2124"
+                android:endColor="#FF14181B" />
+        </shape>
+    </item>
+    <item android:top="0dp" android:bottom="-2dp" android:left="-2dp" android:right="-2dp">
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="32dp"
+                android:topRightRadius="32dp" />
+            <stroke
+                android:width="1.5dp"
+                android:color="#2E5BB5A5" />
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</layer-list>

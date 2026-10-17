@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DrishtiNav</string>
+    <string name="tagline">AI VISION ASSISTANT</string>
     <string name="start">START SCANNING</string>
     <string name="stop">STOP</string>
     <string name="start_desc">Start obstacle scanning. Double tap to activate.</string>
@@ -13,4 +14,32 @@
     <string name="nav_planning">Planning route…</string>
     <string name="nav_waiting_gps">Waiting for GPS fix…</string>
     <string name="sonar_desc">Live scanning indicator</string>
+    <string name="live_status_label">LIVE STATUS</string>
+    <string name="alert_icon_desc">Alert indicator</string>
+    <string name="nav_icon_desc">Navigation indicator</string>
+
+    <!-- Destination dialog -->
+    <string name="dest_hint">Search a place, or enter lat,lng</string>
+    <string name="dest_helper">Online search, or type coordinates like 26.85, 80.94 — works offline.</string>
+    <string name="search">SEARCH</string>
+    <string name="dest_results_label">RESULTS</string>
+    <string name="dest_tip">Tap a result to navigate. Long-press to save or remove a place.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_subtitle">Tuned for your ears and your stride. Changes apply instantly.</string>
+    <string name="section_speech">Speech</string>
+    <string name="section_detection">Detection</string>
+    <string name="section_alerts">Alerts</string>
+    <string name="speech_rate_label">Speech rate</string>
+    <string name="speech_rate_desc">Speech rate slider</string>
+    <string name="hindi_guidance">Hindi guidance</string>
+    <string name="hindi_guidance_sub">Off: English. Needs the Hindi voice in Text-to-speech settings.</string>
+    <string name="urgent_distance_label">Urgent distance</string>
+    <string name="urgent_distance_desc">Urgent distance slider, in meters. Closer obstacles interrupt speech.</string>
+    <string name="near_distance_label">Near distance</string>
+    <string name="near_distance_desc">Near distance slider, in meters. Obstacles inside this range are announced ahead.</string>
+    <string name="keep_screen_on">Keep screen on while scanning</string>
+    <string name="announce_side">Announce side obstacles too</string>
+    <string name="announce_side_sub">Off: only obstacles in your walking path are announced.</string>
 </resources>

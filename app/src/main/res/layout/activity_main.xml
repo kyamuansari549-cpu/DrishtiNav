@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Main UI: fullscreen camera feed, a slim branded app bar, and a rounded
-  bottom control panel with a live sonar indicator, alert readout and two
-  large pill actions. The screen is secondary to voice — it stays bold,
-  high-contrast and thumb-friendly for sighted companions and demos.
+  Main UI: fullscreen camera feed, slim branded app bar, and a premium
+  bottom control deck — live status card, alert readout card, navigation
+  card, and two large thumb-friendly actions. The screen is secondary to
+  voice, so everything stays bold, high-contrast and touch-large for
+  visually impaired users, sighted companions and demos.
+
+  IDs consumed by MainActivity (do not rename): gl_surface, status_text,
+  alert_text, nav_text, nav_card, sonar_view, toggle_button,
+  navigate_button, setup_button.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,112 +28,190 @@
         android:background="@drawable/bg_scrim_top"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="14dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="28dp">
+        android:paddingStart="20dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="34dp">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/sonar_mark" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="14dp"
             android:layout_weight="1"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="21sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.02" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAppearance="@style/Text.DrishtiNav.Headline"
+                android:textSize="22sp"
+                android:letterSpacing="0.02" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tagline"
+                android:textColor="@color/on_surface_variant"
+                android:textSize="12sp"
+                android:letterSpacing="0.06" />
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/setup_button"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.DrishtiNav.Button.Tonal"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="56dp"
             android:minWidth="0dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="@string/setup"
-            android:textSize="14sp"
-            app:cornerRadius="24dp"
-            app:strokeColor="@color/teal"
-            app:strokeWidth="1.5dp"
-            android:textColor="@color/teal" />
+            android:paddingStart="22dp"
+            android:paddingEnd="22dp"
+            android:text="@string/setup" />
     </LinearLayout>
 
-    <!-- Bottom control panel -->
+    <!-- Bottom control deck -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@drawable/bg_panel"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingStart="20dp"
+        android:paddingTop="22dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="24dp">
 
-        <LinearLayout
+        <!-- Live status card -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.DrishtiNav.Card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
-            <com.drishtinav.app.ui.SonarView
-                android:id="@+id/sonar_view"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:contentDescription="@string/sonar_desc" />
-
-            <TextView
-                android:id="@+id/status_text"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_weight="1"
-                android:text="@string/status_idle"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:lineSpacingExtra="2dp" />
-        </LinearLayout>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-        <TextView
-            android:id="@+id/alert_text"
+                <com.drishtinav.app.ui.SonarView
+                    android:id="@+id/sonar_view"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:contentDescription="@string/sonar_desc" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/live_status_label"
+                        android:textAppearance="@style/Text.DrishtiNav.Label"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/status_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/status_idle"
+                        android:textAppearance="@style/Text.DrishtiNav.Body"
+                        android:textSize="15sp"
+                        android:lineSpacingExtra="2dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Alert readout card -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.DrishtiNav.Card.Alert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:minHeight="60dp"
-            android:text=""
-            android:textColor="@color/teal"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            android:lineSpacingExtra="2dp" />
+            android:layout_marginTop="12dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="84dp"
+                android:orientation="horizontal"
+                android:paddingStart="18dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="14dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/alert_icon_desc"
+                    android:src="@drawable/ic_alert" />
+
+                <TextView
+                    android:id="@+id/alert_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="@color/teal"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="3dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Navigation card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/nav_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:visibility="gone"
-            app:cardBackgroundColor="#12202E"
-            app:cardCornerRadius="14dp"
-            app:strokeColor="#2E6B8F"
-            app:strokeWidth="1dp"
-            app:cardElevation="0dp">
+            app:cardBackgroundColor="@color/teal_container"
+            app:cardCornerRadius="20dp"
+            app:strokeColor="@color/teal_dim"
+            app:strokeWidth="1.5dp"
+            app:cardElevation="2dp">
 
-            <TextView
-                android:id="@+id/nav_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="14dp"
-                android:text=""
-                android:textColor="#9fd8ff"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:contentDescription="@string/nav_icon_desc"
+                    android:src="@drawable/ic_navigate"
+                    app:tint="@color/on_teal_container" />
+
+                <TextView
+                    android:id="@+id/nav_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="@color/on_teal_container"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="2dp" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Primary actions -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,37 +220,25 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/toggle_button"
+                style="@style/Widget.DrishtiNav.Button"
                 android:layout_width="0dp"
                 android:layout_height="72dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/start_desc"
                 android:text="@string/start"
-                android:textSize="17sp"
-                app:backgroundTint="@color/teal"
-                android:textColor="@color/black"
-                app:cornerRadius="36dp"
                 app:icon="@drawable/ic_play"
-                app:iconTint="@color/black"
-                app:iconGravity="textStart"
-                app:iconPadding="10dp" />
+                app:iconGravity="textStart" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/navigate_button"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.DrishtiNav.Button.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="72dp"
                 android:layout_weight="1"
                 android:text="@string/navigate"
-                android:textSize="17sp"
-                app:cornerRadius="36dp"
-                app:strokeColor="@color/teal"
-                app:strokeWidth="2dp"
-                android:textColor="@color/teal"
                 app:icon="@drawable/ic_navigate"
-                app:iconTint="@color/teal"
-                app:iconGravity="textStart"
-                app:iconPadding="10dp" />
+                app:iconGravity="textStart" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

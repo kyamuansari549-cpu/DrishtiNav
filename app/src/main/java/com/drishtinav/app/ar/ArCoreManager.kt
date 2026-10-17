@@ -33,6 +33,13 @@ class ArCoreManager(private val activity: Activity) {
     private var textureName = -1
     private var depthSupported = false
     private var errorReported = false
+    /**
+     * True once ARCore has reported TRACKING at least once for the current
+     * session. The camera texture is only drawn after this point — earlier
+     * frames are captured while the camera starts up and focus converges,
+     * so drawing them shows a blurry feed on launch.
+     */
+    private var hasTrackedOnce = false
 
     val isDepthSupported: Boolean get() = depthSupported
 
@@ -87,6 +94,18 @@ class ArCoreManager(private val activity: Activity) {
         session?.close()
         session = null
         textureName = -1
+        hasTrackedOnce = false
+    }
+
+    /**
+     * Call when the GL surface is (re)created. GLSurfaceView destroys the EGL
+     * context on pause by default, so the camera texture id from
+     * [BackgroundRenderer.createOnGlThread] is new and ARCore must be told
+     * about it again — otherwise it keeps writing into a deleted texture and
+     * the preview stays black after a STOP → START cycle.
+     */
+    fun invalidateCameraTexture() {
+        textureName = -1
     }
 
     /** Must be called on the GL thread, once per rendered frame. */
@@ -97,11 +116,29 @@ class ArCoreManager(private val activity: Activity) {
                 textureName = renderer.cameraTextureId
                 session.setCameraTextureName(textureName)
             }
+            // update() must run every frame so tracking can progress, even
+            // while we are not drawing yet.
             val frame: Frame = session.update()
+
+            val tracking = frame.camera.trackingState == TrackingState.TRACKING
+            if (tracking) {
+                hasTrackedOnce = true
+            }
+            if (!hasTrackedOnce) {
+                // ARCore is still starting up: the camera texture holds
+                // pre-focus / uninitialized frames that look blurry. Show a
+                // clean placeholder instead of drawing them.
+                renderer.clear()
+                frameListener?.onStatus(
+                    "Starting camera — point at a textured surface and move slowly"
+                )
+                return
+            }
+
             renderer.draw(frame)
 
             val camera: Camera = frame.camera
-            if (camera.trackingState != TrackingState.TRACKING) {
+            if (!tracking) {
                 frameListener?.onStatus("Searching for visual features — move the phone slowly")
                 return
             }

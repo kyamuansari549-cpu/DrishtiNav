@@ -137,6 +137,18 @@ Report back: which tests pass, any crash logs from Logcat (filter `DrishtiNav`).
 - `tasks-vision:0.10.35` native libs are 4 KB page-aligned; before a Play Store
   release targeting Android 15+, bump to `tasks-vision:1.0.0` (16 KB aligned).
 
+## Changelog
+
+### v0.7.0 (2026-10-17) — maps, UI, blur fix, accuracy
+- **Place search rewritten** (`nav/Geocoder.kt`): India bias (`countrycodes=in`),
+  GPS viewbox bias, Photon fallback, relevance re-ranking, Hindi names.
+- **UI overhaul**: Material 3 dark theme, new bottom control deck, redesigned
+  destination dialog with distance hints, grouped Settings, glowing sonar.
+- **Blur-on-open fixed**: camera feed now waits for ARCore TRACKING before
+  drawing (was showing pre-focus frames); STOP→START black preview fixed.
+- **Accuracy**: temporal smoothing (2-frame persistence), per-class thresholds,
+  NMS, 3×3-grid 30th-percentile ranging (nearest-surface distance).
+
 ## Play Store release checklist
 
 - [ ] Field-test protocols (Phase 1 + Phase 2) pass on the Redmi Note 11 Pro 5G
